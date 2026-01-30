@@ -1,3 +1,5 @@
+export type UserUpdateFields = Partial<Omit<User, "id">>;
+
 export interface User {
     id: string;
     firstName: string;
@@ -8,8 +10,12 @@ export interface UserCollection {
     [key: string]: User;
 }
 
-const exampleUser:User = {
-    id: "1",
-    firstName: "g",
-    lastName: "p",
+export interface UsersServiceInterface {    
+    getAllUsers(): User[];
+    
+    createUser(firstName: string, lastName: string): boolean;
+    
+    updateUser(id: string, updates: UserUpdateFields): boolean;
+    
+    deleteUser(id: string): boolean;
 }
