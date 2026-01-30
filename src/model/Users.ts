@@ -11,6 +11,12 @@ export interface UserCollection {
 }
 
 export interface UsersServiceInterface {    
+    /*
+    class that implements interface should also hold in memory private UserCollection
+    
+    cannot be defined within the interface because that would make the collection implicitly public and directly mutable,
+    which doesn't support encapsulation oop principles
+    */
     getAllUsers(): User[];
     
     createUser(firstName: string, lastName: string): boolean;
