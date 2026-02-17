@@ -53,6 +53,7 @@ export class UsersService implements UsersServiceInterface {
       [id]: {
         ...userToUpdate,
         ...updates,
+        id: userToUpdate.id, // Ensure id is never updated
       },
     };
     this.users = newCollection;
