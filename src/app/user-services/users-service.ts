@@ -23,7 +23,7 @@ export class UsersService implements UsersServiceInterface {
     aboutMe: string,
     hobbies: string[],
     premiumUser: boolean,
-    imageUrl: string
+    imageUrl: string,
   ): boolean {
     const userId: string = crypto.randomUUID();
     const newUser: User = {
