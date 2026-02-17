@@ -33,7 +33,7 @@ export class UserListComponent {
 
   deleteUser(id: string) {
     const confirmation = prompt("Type 'DELETE' to confirm deletion:");
-    if (confirmation === 'a') {
+    if (confirmation === 'DELETE') {
       this.userService.deleteUser(id);
       alert('User deleted successfully.');
     } else {

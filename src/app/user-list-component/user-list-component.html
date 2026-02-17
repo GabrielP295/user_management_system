@@ -1,3 +1,7 @@
+<div class="header">
+  <h1>User Management System</h1>
+  <button class="add-user-button" [routerLink]="['/user-create-component']">Add User</button>
+</div>
 <div class="users-container">
   <div class="users-grid">
     @for (user of displayedUsers(); track user.id) {
@@ -5,7 +9,10 @@
         <!-- Top Section: Image on left, Name and Premium on right -->
         <div class="card-header">
           <div class="user-image">
-            <img [src]="user.imageUrl" [alt]="user.firstName + ' ' + user.lastName" />
+            <img
+              [src]="user.imageUrl || 'assets/images/default_profile_icon.jpg'"
+              [alt]="user.firstName + ' ' + user.lastName"
+            />
           </div>
           <div class="user-info-top">
             <div class="name-premium">
@@ -26,7 +33,7 @@
             <p>{{ user.aboutMe }}</p>
           </div>
 
-          <!-- Hobbies Section (under image) -->
+          <!-- Hobbies Section -->
           <div class="hobbies-section">
             <h4>Hobbies</h4>
             <div class="hobbies-list">
@@ -37,17 +44,23 @@
           </div>
         </div>
 
-        <!-- Actions Footer -->
-        <div class="card-footer">
-          <button class="edit-button" [routerLink]="['/edit-user', user.id]">Edit</button>
+        <!-- Buttons -->
+        <div class="buttons-container">
+          <button class="edit-button" [routerLink]="['/user-edit-component', user.id]">Edit</button>
           <button class="delete-button" (click)="deleteUser(user.id)">Delete</button>
         </div>
       </div>
-    }
-    @if (hasMoreUsers()) {
-      <div class="show-more-container">
-        <button class="show-more-button" (click)="showMore()">Show More</button>
-      </div>
+    } @empty {
+      <p class="no-users">
+        No users found. Please add some users
+        <a [routerLink]="['/user-create-component']" class="add-user-link">here</a>.
+      </p>
     }
   </div>
+  <!-- Show more button -->
+  @if (hasMoreUsers()) {
+    <div class="show-more-container">
+      <button class="show-more-button" (click)="showMore()">Show More</button>
+    </div>
+  }
 </div>

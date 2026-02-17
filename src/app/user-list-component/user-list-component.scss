@@ -5,6 +5,42 @@
   min-height: 100vh;
 }
 
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 40px;
+}
+
+h1 {
+  margin: 0 0 10px 0;
+  font-size: 48px;
+  font-weight: 600;
+  color: #c8e6c9;
+}
+
+.add-user-button {
+  background-color: #52b788;
+  color: #1b4332;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+
+  &:hover {
+    background-color: #74c69d;
+  }
+}
+
+body {
+  margin: 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #1b4332;
+  color: #e8f5e9;
+}
+
 .users-container {
   max-width: 1400px;
   margin: 0 auto;
@@ -65,8 +101,8 @@
   }
 
   .premium-badge {
-    background-color: #ffd700;
-    color: #000;
+    background-color: #0c4904;
+    color: #ffffff;
     padding: 4px 12px;
     border-radius: 20px;
     font-size: 12px;
@@ -84,6 +120,7 @@
 
 .card-body {
   display: flex;
+  min-height: 100px;
   gap: 20px;
   margin-bottom: 20px;
   padding: 15px 0;
@@ -111,7 +148,8 @@
 }
 
 .hobbies-section {
-  flex: 0 0 200px;
+  flex: 1;
+  min-width: 150px;
 
   h4 {
     margin: 0 0 10px 0;
@@ -126,6 +164,7 @@
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
+  max-width: 100%;
 }
 
 .hobby-tag {
@@ -160,6 +199,77 @@
     background-color: #74c69d;
     transform: translateY(-2px);
     box-shadow: 0 6px 16px rgba(82, 183, 136, 0.3);
+  }
+
+  &:active {
+    transform: translateY(0);
+  }
+}
+
+.buttons-container {
+  display: flex;
+  justify-content: flex-start;
+  gap: 10px;
+}
+
+.edit-button {
+  background-color: #537dd8;
+  color: #fff;
+  border: 2px solid #537dd8;
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+
+  &:hover {
+    background-color: #698cd8;
+    color: #fff;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(82, 183, 136, 0.3);
+  }
+}
+
+.delete-button {
+  background-color: #eb1818;
+  color: #fff;
+  border: 2px solid #eb1818;
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+
+  &:hover {
+    background-color: #e24747;
+    color: #fff;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(229, 115, 115, 0.3);
+  }
+}
+
+.show-more-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 30px;
+  align-items: center;
+}
+
+.show-more-button {
+  background-color: #52b78800;
+  color: #ffffff;
+  padding: 12px 40px;
+  border: none;
+  border-radius: 6px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+
+  &:hover {
+    color: #d0d4d2;
   }
 
   &:active {
