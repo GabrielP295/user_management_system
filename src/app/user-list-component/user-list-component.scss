@@ -34,6 +34,21 @@ h1 {
   }
 }
 
+.no-users {
+  font-size: 18px;
+  color: #a8d5ba;
+}
+
+.no-users a {
+  color: #fdfdfd;
+  text-decoration: none;
+  font-weight: 600;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
 body {
   margin: 0;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
