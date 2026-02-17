@@ -1,1 +1,55 @@
-<p>user-create-component works!</p>
+<form [formGroup]="userProperties">
+  <div class="form-group">
+    <label for="firstName">First Name:</label>
+    <input id="firstName" formControlName="firstName" type="text" class="form-control" />
+  </div>
+
+  <div class="form-group">
+    <label for="lastName">Last Name:</label>
+    <input id="lastName" formControlName="lastName" type="text" class="form-control" />
+  </div>
+
+  <div class="form-group">
+    <label for="email">Email:</label>
+    <input id="email" formControlName="email" type="email" class="form-control" />
+  </div>
+
+  <div class="form-group">
+    <label for="age">Age:</label>
+    <input id="age" formControlName="age" type="number" class="form-control" />
+  </div>
+
+  <div class="form-group">
+    <label for="aboutMe">About Me:</label>
+    <textarea id="aboutMe" formControlName="aboutMe" class="form-control"></textarea>
+  </div>
+
+  <span>Hobbies:</span>
+  @for (hobby of getHobbies(); track hobby) {
+    <div class="form-group">
+      <label for="hobby">Hobby:</label>
+      <input id="hobby" formControlName="TODO" type="text" class="form-control" />
+    </div>
+  }
+  <button type="button" class="btn addHobby" (click)="addHobbyInput()">Add Hobby</button>
+  <button
+    type="button"
+    class="btn removeHobby"
+    (click)="removeHobbyInput()"
+    [disabled]="hobbyNumber <= 1"
+  >
+    Remove Hobby
+  </button>
+
+  <div class="form-group">
+    <label for="premiumUser">Premium User:</label>
+    <input
+      id="premiumUser"
+      formControlName="premiumUser"
+      type="checkbox"
+      class="form-check-input"
+    />
+  </div>
+
+  <button type="submit" class="btn btn-primary">Create User</button>
+</form>
