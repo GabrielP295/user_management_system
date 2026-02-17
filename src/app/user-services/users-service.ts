@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { User, UserCollection, UsersServiceInterface, UserUpdateFields } from '../../model/Users';
-import { last } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -10,19 +9,35 @@ export class UsersService implements UsersServiceInterface {
 
   getAllUsers(): User[] {
     const userArray: User[] = [];
-    for(const user in this.users) {
+    for (const user in this.users) {
       userArray.push(this.users[user]);
     }
     return userArray;
   }
 
-  createUser(firstName: string, lastName: string): boolean {
+  createUser(
+    firstName: string,
+    lastName: string,
+    email: string,
+    age: number,
+    aboutMe: string,
+    hobbies: string[],
+    premiumUser: boolean,
+    imageUrl: string,
+  ): boolean {
     const userId: string = crypto.randomUUID();
     const newUser: User = {
       id: userId,
       firstName: firstName,
       lastName: lastName,
-    }
+      email: email,
+      age: age,
+      aboutMe: aboutMe,
+      hobbies: hobbies,
+      premiumUser: premiumUser,
+      imageUrl: imageUrl,
+    };
+    this.users[userId] = newUser;
     return true;
   }
 
@@ -33,13 +48,14 @@ export class UsersService implements UsersServiceInterface {
       return false;
     }
 
-    const newCollection: UserCollection = { 
+    const newCollection: UserCollection = {
       ...this.users,
       [id]: {
         ...userToUpdate,
         ...updates,
-      }
-    }
+        id: userToUpdate.id, // Ensure id is never updated
+      },
+    };
     this.users = newCollection;
 
     return true;
