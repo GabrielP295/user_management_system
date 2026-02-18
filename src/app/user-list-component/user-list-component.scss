@@ -173,6 +173,13 @@ body {
     text-transform: uppercase;
     color: #c8e6c9;
   }
+
+  p {
+    margin: 0;
+    font-size: 14px;
+    color: #a8d5ba;
+    line-height: 1.5;
+  }
 }
 
 .hobbies-list {
@@ -212,12 +219,6 @@ body {
 
   &:hover {
     background-color: #74c69d;
-    transform: translateY(-2px);
-    box-shadow: 0 6px 16px rgba(82, 183, 136, 0.3);
-  }
-
-  &:active {
-    transform: translateY(0);
   }
 }
 
@@ -240,9 +241,6 @@ body {
 
   &:hover {
     background-color: #698cd8;
-    color: #fff;
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(82, 183, 136, 0.3);
   }
 }
 
@@ -259,9 +257,6 @@ body {
 
   &:hover {
     background-color: #e24747;
-    color: #fff;
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(229, 115, 115, 0.3);
   }
 }
 
@@ -285,10 +280,6 @@ body {
 
   &:hover {
     color: #d0d4d2;
-  }
-
-  &:active {
-    transform: translateY(0);
   }
 }
 
