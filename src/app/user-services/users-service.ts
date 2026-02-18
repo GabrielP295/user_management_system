@@ -15,6 +15,10 @@ export class UsersService implements UsersServiceInterface {
     return userArray;
   }
 
+  getUserById(id: string) {
+    return this.users[id];
+  }
+
   createUser(
     firstName: string,
     lastName: string,
@@ -62,6 +66,7 @@ export class UsersService implements UsersServiceInterface {
   }
 
   deleteUser(id: string): boolean {
+    console.log('Deleting user with id:', id);
     const { [id]: _, ...rest } = this.users;
     this.users = rest;
     return true;

@@ -1,0 +1,74 @@
+<div class="header">
+  <h1>User Management System</h1>
+  <button class="add-user-button" [routerLink]="['/user-create-component']">Add User</button>
+</div>
+<div class="users-container">
+  <div class="users-grid">
+    @for (user of displayedUsers(); track user.id) {
+      <div class="user-card">
+        <!-- Top Section: Image on left, Name and Premium on right -->
+        <div class="card-header">
+          <div class="user-image">
+            <img
+              [src]="user.imageUrl || 'assets/images/default_profile_icon.jpg'"
+              [alt]="user.firstName + ' ' + user.lastName"
+            />
+          </div>
+          <div class="user-info-top">
+            <div class="name-premium">
+              <h3 class="user-name">{{ user.firstName }} {{ user.lastName }}</h3>
+              @if (user.premiumUser) {
+                <span class="premium-badge">⭐ Premium</span>
+              }
+            </div>
+            <p class="email">Email: {{ user.email }}</p>
+            <p class="age">Age: {{ user.age }}</p>
+          </div>
+        </div>
+
+        <!-- About Me Section -->
+        <div class="card-body">
+          <div class="about-section">
+            <h4>About Me</h4>
+            <p>{{ getAboutMeText(user.aboutMe) }}</p>
+          </div>
+
+          <!-- Hobbies Section -->
+          <div class="hobbies-section">
+            <h4>Hobbies</h4>
+            @if (hasHobbies(user.hobbies)) {
+              <div class="hobbies-list">
+                @for (hobby of user.hobbies; track hobby) {
+                  @if (hobby && hobby.trim() !== '') {
+                    <span class="hobby-tag">{{ hobby }}</span>
+                  }
+                }
+              </div>
+            } @else {
+              <p>No hobbies listed</p>
+            }
+          </div>
+        </div>
+
+        <!-- Buttons -->
+        <div class="buttons-container">
+          <button class="edit-button" [routerLink]="['/user-create-component', user.id]">
+            Edit
+          </button>
+          <button class="delete-button" (click)="deleteUser(user.id)">Delete</button>
+        </div>
+      </div>
+    } @empty {
+      <p class="no-users">
+        No users found. Please add some users
+        <a [routerLink]="['/user-create-component']" class="add-user-link">here</a>.
+      </p>
+    }
+  </div>
+  <!-- Show more button -->
+  @if (hasMoreUsers()) {
+    <div class="show-more-container">
+      <button class="show-more-button" (click)="showMore()">Show More</button>
+    </div>
+  }
+</div>
