@@ -23,6 +23,9 @@ export class UserCreateComponent implements OnInit {
   router = inject(Router);
   isEditMode: boolean = false;
   userId: string = null!;
+  buttonClicked: boolean = false;
+  successMessage: string = '';
+  showSuccess: boolean = false;
 
   ngOnInit(): void {
     this.userId = this.route.snapshot.paramMap.get('id')!;
@@ -46,19 +49,33 @@ export class UserCreateComponent implements OnInit {
   prefillFormForEditMode() {
     const user = this.userService.getUserById(this.userId);
     if (user) {
-      this.userProperties.setValue({
+      const hobbiesArray = this.userProperties.get('hobbies') as FormArray;
+
+      // Clear all existing hobby FormControls
+      while (hobbiesArray.length > 0) {
+        hobbiesArray.removeAt(0);
+      }
+
+      // Add the correct number of FormControls with the user's hobby values
+      user.hobbies.forEach((hobby) => {
+        hobbiesArray.push(new FormControl(hobby));
+      });
+
+      // Set values for non-FormArray controls
+      this.userProperties.patchValue({
         firstName: user.firstName,
         lastName: user.lastName,
         email: user.email,
         age: user.age,
         aboutMe: user.aboutMe,
-        hobbies: user.hobbies,
         premiumUser: user.premiumUser,
       });
     }
   }
 
   onSubmitUser() {
+    this.buttonClicked = true;
+
     if (this.userProperties.invalid) {
       return;
     }
@@ -77,12 +94,21 @@ export class UserCreateComponent implements OnInit {
 
     if (this.isEditMode) {
       this.updateUser(user);
-    } else {
-      this.createUser(user);
+      this.router.navigate(['/user-list-component']);
+      return;
     }
 
+    // Store the name for success message before resetting
+    this.successMessage = `${user.firstName} ${user.lastName} was created successfully!`;
+    this.showSuccess = true;
+
+    this.createUser(user);
     this.resetValues();
-    this.router.navigate(['/user-list-component']);
+
+    // Auto-hide success message after 4 seconds
+    setTimeout(() => {
+      this.showSuccess = false;
+    }, 4000);
   }
 
   createUser(user: any) {
@@ -104,6 +130,7 @@ export class UserCreateComponent implements OnInit {
 
   resetValues() {
     this.userProperties.reset();
+    this.buttonClicked = false;
     const hobbiesArray = this.userProperties.get('hobbies') as FormArray;
     while (hobbiesArray.length > 1) {
       hobbiesArray.removeAt(hobbiesArray.length - 1);

@@ -30,17 +30,23 @@
         <div class="card-body">
           <div class="about-section">
             <h4>About Me</h4>
-            <p>{{ user.aboutMe }}</p>
+            <p>{{ getAboutMeText(user.aboutMe) }}</p>
           </div>
 
           <!-- Hobbies Section -->
           <div class="hobbies-section">
             <h4>Hobbies</h4>
-            <div class="hobbies-list">
-              @for (hobby of user.hobbies; track hobby) {
-                <span class="hobby-tag">{{ hobby }}</span>
-              }
-            </div>
+            @if (hasHobbies(user.hobbies)) {
+              <div class="hobbies-list">
+                @for (hobby of user.hobbies; track hobby) {
+                  @if (hobby && hobby.trim() !== '') {
+                    <span class="hobby-tag">{{ hobby }}</span>
+                  }
+                }
+              </div>
+            } @else {
+              <p>No hobbies listed</p>
+            }
           </div>
         </div>
 
