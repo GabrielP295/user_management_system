@@ -37,6 +37,7 @@ export class UsersService implements UsersServiceInterface {
       premiumUser: premiumUser,
       imageUrl: imageUrl,
     };
+    console.log('Creating user: ', newUser);
     this.users[userId] = newUser;
     return true;
   }

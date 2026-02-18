@@ -46,7 +46,9 @@
 
         <!-- Buttons -->
         <div class="buttons-container">
-          <button class="edit-button" [routerLink]="['/user-edit-component', user.id]">Edit</button>
+          <button class="edit-button" [routerLink]="['/user-create-component', user.id]">
+            Edit
+          </button>
           <button class="delete-button" (click)="deleteUser(user.id)">Delete</button>
         </div>
       </div>
