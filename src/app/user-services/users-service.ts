@@ -15,6 +15,10 @@ export class UsersService implements UsersServiceInterface {
     return userArray;
   }
 
+  getUserById(id: string) {
+    return this.users[id];
+  }
+
   createUser(
     firstName: string,
     lastName: string,
@@ -37,7 +41,6 @@ export class UsersService implements UsersServiceInterface {
       premiumUser: premiumUser,
       imageUrl: imageUrl,
     };
-    console.log('Creating user: ', newUser);
     this.users[userId] = newUser;
     return true;
   }
