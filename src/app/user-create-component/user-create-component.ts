@@ -1,79 +1,111 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { UsersService } from '../user-services/users-service';
 import {
+  Form,
+  FormArray,
   FormControl,
   FormGroup,
   FormsModule,
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
+import { ActivatedRoute, RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-user-create-component',
-  imports: [ReactiveFormsModule, FormsModule],
+  imports: [ReactiveFormsModule, FormsModule, RouterLink],
   templateUrl: './user-create-component.html',
   styleUrl: './user-create-component.scss',
 })
-export class UserCreateComponent {
+export class UserCreateComponent implements OnInit {
   userService = inject(UsersService);
-  hobbyNumber = 1;
+  route = inject(ActivatedRoute);
+  isEditMode: boolean = false;
+  userId: string = null!;
+
+  ngOnInit(): void {
+    this.userId = this.route.snapshot.paramMap.get('id')!;
+
+    if (this.userId) {
+      this.isEditMode = true;
+    }
+  }
 
   userProperties: FormGroup = new FormGroup({
-    firstName: new FormControl(),
-    lastName: new FormControl(),
-    email: new FormControl(),
-    age: new FormControl(),
+    firstName: new FormControl('', Validators.required),
+    lastName: new FormControl('', Validators.required),
+    email: new FormControl('', Validators.required),
+    age: new FormControl('', Validators.required),
     aboutMe: new FormControl(),
-    hobby1: new FormControl(),
+    hobbies: new FormArray([new FormControl()]),
     premiumUser: new FormControl(false),
   });
 
-  createUser() {
-    const hobbies: string[] = this.getHobbies();
+  onSubmitUser() {
+    if (this.userProperties.invalid) {
+      return;
+    }
 
-    const newUser = this.userService.createUser(
-      this.userProperties.value.firstName,
-      this.userProperties.value.lastName,
-      this.userProperties.value.email,
-      this.userProperties.value.age,
-      this.userProperties.value.aboutMe,
+    const hobbies = this.userProperties.get('hobbies')!.value;
+    const user = {
+      firstName: this.userProperties.value.firstName,
+      lastName: this.userProperties.value.lastName,
+      email: this.userProperties.value.email,
+      age: this.userProperties.value.age,
+      aboutMe: this.userProperties.value.aboutMe,
       hobbies,
-      this.userProperties.value.premiumUser,
-      'assets/images/default_profile_icon.jpg',
-    );
+      premiumUser: this.userProperties.value.premiumUser,
+      profileImage: 'assets/images/default_profile_icon.jpg',
+    };
+
+    if (this.isEditMode) {
+      this.updateUser(user);
+    } else {
+      this.createUser(user);
+    }
 
     this.resetValues();
   }
 
-  resetValues() {
-    this.userProperties.reset();
-    for (let i = 2; i <= this.hobbyNumber; i++) {
-      this.userProperties.removeControl(`hobby${i}`);
-    }
-    this.hobbyNumber = 1;
-  }
-
-  getHobbies() {
-    const hobbies: string[] = [];
-    for (let i = 1; i <= this.hobbyNumber; i++) {
-      hobbies.push(this.userProperties.value[`hobby${i}`]);
-    }
-    return hobbies;
-  }
-
-  addHobbyInput() {
-    this.hobbyNumber++;
-    this.userProperties.addControl(
-      `hobby${this.hobbyNumber}`,
-      new FormControl('', Validators.required),
+  createUser(user: any) {
+    this.userService.createUser(
+      user.firstName,
+      user.lastName,
+      user.email,
+      user.age,
+      user.aboutMe,
+      user.hobbies,
+      user.premiumUser,
+      user.profileImage,
     );
   }
 
-  removeHobbyInput() {
-    if (this.hobbyNumber <= 1) {
-      return;
+  updateUser(user: any) {
+    this.userService.updateUser(this.userId, user);
+  }
+
+  resetValues() {
+    this.userProperties.reset();
+    const hobbiesArray = this.userProperties.get('hobbies') as FormArray;
+    while (hobbiesArray.length > 1) {
+      hobbiesArray.removeAt(hobbiesArray.length - 1);
     }
-    this.hobbyNumber--;
-    this.userProperties.removeControl(`hobby${this.hobbyNumber}`);
+    hobbiesArray.reset();
+  }
+
+  getHobbies(): FormArray {
+    return this.userProperties.get('hobbies') as FormArray;
+  }
+
+  addHobbyInput() {
+    const hobbiesArray = this.userProperties.get('hobbies') as FormArray;
+    hobbiesArray.push(new FormControl('', Validators.required));
+  }
+
+  removeHobbyInput() {
+    const hobbiesArray = this.userProperties.get('hobbies') as FormArray;
+    if (hobbiesArray.length > 1) {
+      hobbiesArray.removeAt(hobbiesArray.length - 1);
+    }
   }
 }

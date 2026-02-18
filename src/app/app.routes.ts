@@ -1,6 +1,5 @@
 import { Routes } from '@angular/router';
 import { UserCreateComponent } from './user-create-component/user-create-component';
-import { UserEditComponent } from './user-edit-component/user-edit-component';
 import { UserListComponent } from './user-list-component/user-list-component';
 
 export const routes: Routes = [
@@ -18,7 +17,7 @@ export const routes: Routes = [
     component: UserCreateComponent,
   },
   {
-    path: 'user-edit-component/:id',
-    component: UserEditComponent,
+    path: 'user-create-component/:id',
+    component: UserCreateComponent,
   },
 ];
