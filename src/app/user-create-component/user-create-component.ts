@@ -9,7 +9,7 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { ActivatedRoute, RouterLink } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-user-create-component',
@@ -20,6 +20,7 @@ import { ActivatedRoute, RouterLink } from '@angular/router';
 export class UserCreateComponent implements OnInit {
   userService = inject(UsersService);
   route = inject(ActivatedRoute);
+  router = inject(Router);
   isEditMode: boolean = false;
   userId: string = null!;
 
@@ -28,6 +29,7 @@ export class UserCreateComponent implements OnInit {
 
     if (this.userId) {
       this.isEditMode = true;
+      this.prefillFormForEditMode();
     }
   }
 
@@ -40,6 +42,21 @@ export class UserCreateComponent implements OnInit {
     hobbies: new FormArray([new FormControl()]),
     premiumUser: new FormControl(false),
   });
+
+  prefillFormForEditMode() {
+    const user = this.userService.getUserById(this.userId);
+    if (user) {
+      this.userProperties.setValue({
+        firstName: user.firstName,
+        lastName: user.lastName,
+        email: user.email,
+        age: user.age,
+        aboutMe: user.aboutMe,
+        hobbies: user.hobbies,
+        premiumUser: user.premiumUser,
+      });
+    }
+  }
 
   onSubmitUser() {
     if (this.userProperties.invalid) {
@@ -65,6 +82,7 @@ export class UserCreateComponent implements OnInit {
     }
 
     this.resetValues();
+    this.router.navigate(['/user-list-component']);
   }
 
   createUser(user: any) {
@@ -99,7 +117,7 @@ export class UserCreateComponent implements OnInit {
 
   addHobbyInput() {
     const hobbiesArray = this.userProperties.get('hobbies') as FormArray;
-    hobbiesArray.push(new FormControl('', Validators.required));
+    hobbiesArray.push(new FormControl());
   }
 
   removeHobbyInput() {
