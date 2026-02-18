@@ -1,24 +1,23 @@
 import { Routes } from '@angular/router';
 import { UserCreateComponent } from './user-create-component/user-create-component';
-import { UserEditComponent } from './user-edit-component/user-edit-component';
-import { UsersListComponent } from './users-list-component/users-list-component';
+import { UserListComponent } from './user-list-component/user-list-component';
 
 export const routes: Routes = [
-    {
-        path: '',
-        redirectTo: 'UsersListComponent',
-        pathMatch: 'full',
-    },
-    {
-        path: '/users',
-        component: UsersListComponent,
-    },
-    {
-        path: '/users/new',
-        component: UserCreateComponent,
-    },
-    {
-        path: 'users/:id/edit',
-        component: UserEditComponent,
-    }
+  {
+    path: '',
+    redirectTo: 'user-list-component',
+    pathMatch: 'full',
+  },
+  {
+    path: 'user-list-component',
+    component: UserListComponent,
+  },
+  {
+    path: 'user-create-component',
+    component: UserCreateComponent,
+  },
+  {
+    path: 'user-create-component/:id',
+    component: UserCreateComponent,
+  },
 ];
