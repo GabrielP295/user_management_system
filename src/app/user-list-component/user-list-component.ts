@@ -40,4 +40,19 @@ export class UserListComponent {
       alert('Deletion cancelled. User was not deleted.');
     }
   }
+
+  hasHobbies(hobbies: string[]): boolean {
+    if (!hobbies || hobbies.length === 0) {
+      return false;
+    }
+    // Only return true if at least one hobby has actual text (not empty or whitespace)
+    return hobbies.some((hobby) => hobby && hobby.trim() !== '');
+  }
+
+  getAboutMeText(aboutMe: string): string {
+    if (!aboutMe || aboutMe.trim() === '') {
+      return 'No about me provided.';
+    }
+    return aboutMe;
+  }
 }

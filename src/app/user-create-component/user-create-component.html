@@ -121,6 +121,16 @@
           {{ isEditMode ? 'Update User' : 'Create User' }}
         </button>
       </div>
+
+      <!-- Validation Error Message -->
+      @if (userProperties.invalid && buttonClicked) {
+        <p class="error-message">Please fill out all required inputs</p>
+      }
+
+      <!-- Success Message -->
+      @if (showSuccess) {
+        <p class="success-message">{{ successMessage }}</p>
+      }
     </form>
   </div>
 </div>
