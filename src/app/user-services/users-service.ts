@@ -4,6 +4,7 @@ import { User, UserCollection, UsersServiceInterface, UserUpdateFields } from '.
 @Injectable({
   providedIn: 'root',
 })
+
 export class UsersService implements UsersServiceInterface {
   private users: UserCollection = {};
 
