@@ -1,5 +1,4 @@
 import { Component, inject, OnInit } from '@angular/core';
-import { UsersService } from '../user-services/users-service';
 import {
   Form,
   FormArray,
@@ -10,6 +9,8 @@ import {
   Validators,
 } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+import { UserRepository } from '../user-repository/user-repository';
+import { take } from 'rxjs';
 
 @Component({
   selector: 'app-user-create-component',
@@ -18,7 +19,8 @@ import { ActivatedRoute, Router, RouterLink } from '@angular/router';
   styleUrl: './user-create-component.scss',
 })
 export class UserCreateComponent implements OnInit {
-  userService = inject(UsersService);
+  // userService = inject(UserServices); -> was used with in memory database
+  userService = inject(UserRepository);
   route = inject(ActivatedRoute);
   router = inject(Router);
   isEditMode: boolean = false;
@@ -47,30 +49,31 @@ export class UserCreateComponent implements OnInit {
   });
 
   prefillFormForEditMode() {
-    const user = this.userService.getUserById(this.userId);
-    if (user) {
-      const hobbiesArray = this.userProperties.get('hobbies') as FormArray;
+    this.userService.getUserById$(this.userId)
+      .pipe(take(1)).subscribe(user => {
+        if (!user) return;
+        const hobbiesArray = this.userProperties.get('hobbies') as FormArray;
 
-      // Clear all existing hobby FormControls
-      while (hobbiesArray.length > 0) {
-        hobbiesArray.removeAt(0);
-      }
+        // Clear all existing hobby FormControls
+        while (hobbiesArray.length > 0) {
+          hobbiesArray.removeAt(0);
+        }
 
-      // Add the correct number of FormControls with the user's hobby values
-      user.hobbies.forEach((hobby) => {
-        hobbiesArray.push(new FormControl(hobby));
-      });
+        // Add the correct number of FormControls with the user's hobby values
+        (user.hobbies ?? []).forEach((hobby) => {
+          hobbiesArray.push(new FormControl(hobby));
+        });
 
-      // Set values for non-FormArray controls
-      this.userProperties.patchValue({
-        firstName: user.firstName,
-        lastName: user.lastName,
-        email: user.email,
-        age: user.age,
-        aboutMe: user.aboutMe,
-        premiumUser: user.premiumUser,
-      });
-    }
+        // Set values for non-FormArray controls
+        this.userProperties.patchValue({
+          firstName: user.firstName,
+          lastName: user.lastName,
+          email: user.email,
+          age: user.age,
+          aboutMe: user.aboutMe,
+          premiumUser: user.premiumUser,
+        });
+      })
   }
 
   onSubmitUser() {
@@ -89,7 +92,7 @@ export class UserCreateComponent implements OnInit {
       aboutMe: this.userProperties.value.aboutMe,
       hobbies,
       premiumUser: this.userProperties.value.premiumUser,
-      profileImage: 'assets/images/default_profile_icon.jpg',
+      imageUrl: 'assets/images/default_profile_icon.jpg',
     };
 
     if (this.isEditMode) {
@@ -98,11 +101,10 @@ export class UserCreateComponent implements OnInit {
       return;
     }
 
-    // Store the name for success message before resetting
+    // Create user and display success message
+    this.createUser(user);
     this.successMessage = `${user.firstName} ${user.lastName} was created successfully!`;
     this.showSuccess = true;
-
-    this.createUser(user);
     this.resetValues();
 
     // Auto-hide success message after 4 seconds
@@ -113,14 +115,16 @@ export class UserCreateComponent implements OnInit {
 
   createUser(user: any) {
     this.userService.createUser(
-      user.firstName,
-      user.lastName,
-      user.email,
-      user.age,
-      user.aboutMe,
-      user.hobbies,
-      user.premiumUser,
-      user.profileImage,
+      {
+        firstName: user.firstName,
+        lastName: user.lastName,
+        email: user.email,
+        age: user.age,
+        aboutMe: user.aboutMe,
+        hobbies: user.hobbies,
+        premiumUser: user.premiumUser,
+        imageUrl: user.imageUrl,
+      }
     );
   }
 

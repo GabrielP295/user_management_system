@@ -1,6 +1,8 @@
-import { Component, inject, signal } from '@angular/core';
-import { UsersService } from '../user-services/users-service';
+import { Component, inject, OnInit, signal } from '@angular/core';
+import { UserRepository } from '../user-repository/user-repository';
 import { RouterLink } from '@angular/router';
+import { User } from '../../model/Users';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-user-list-component',
@@ -8,27 +10,32 @@ import { RouterLink } from '@angular/router';
   templateUrl: './user-list-component.html',
   styleUrl: './user-list-component.scss',
 })
-export class UserListComponent {
-  userService = inject(UsersService);
+export class UserListComponent implements OnInit{
+  userService = inject(UserRepository);
+  users = signal<User[]>([]);
   usersPerPage = 8;
   currentPage = signal(1);
 
+  ngOnInit(): void {
+    this.userService.getAllUsers$().subscribe(users => {
+      this.users.set(users);
+    });
+  }
+
   displayedUsers() {
-    const allUsers = this.getAllUsers();
+    const allUsers = this.users();
     const startIndex = (this.currentPage() - 1) * this.usersPerPage;
-    return allUsers.slice(0, startIndex + this.usersPerPage);
+    const returny = allUsers.slice(0, startIndex + this.usersPerPage);
+    console.log(returny);
+    return returny;
   }
 
   hasMoreUsers(): boolean {
-    return this.displayedUsers().length < this.getAllUsers().length;
+    return this.displayedUsers().length < this.users().length;
   }
 
   showMore() {
     this.currentPage.set(this.currentPage() + 1);
-  }
-
-  getAllUsers() {
-    return this.userService.getAllUsers();
   }
 
   deleteUser(id: string) {

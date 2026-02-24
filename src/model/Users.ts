@@ -1,3 +1,6 @@
+import { DocumentReference } from "@angular/fire/firestore";
+import { Observable } from "rxjs";
+
 export type UserUpdateFields = Partial<Omit<User, 'id'>>;
 
 export interface User {
@@ -23,20 +26,10 @@ export interface UsersServiceInterface {
     cannot be defined within the interface because that would make the collection implicitly public and directly mutable,
     which doesn't support encapsulation oop principles
     */
-  getAllUsers(): User[];
+  getAllUsers$(): Observable<User[]>;
+  getUserById$(id: string): Observable<User | undefined>;
 
-  createUser(
-    firstName: string,
-    lastName: string,
-    email: string,
-    age: number,
-    aboutMe: string,
-    hobbies: string[],
-    premiumUser: boolean,
-    imageUrl: string
-  ): boolean;
-
-  updateUser(id: string, updates: UserUpdateFields): boolean;
-
-  deleteUser(id: string): boolean;
+  createUser(user: Omit<User, 'id'>): Promise<DocumentReference<User>>;
+  updateUser(id: string, updates: UserUpdateFields): Promise<void>;
+  deleteUser(id: string): Promise<void>;
 }
