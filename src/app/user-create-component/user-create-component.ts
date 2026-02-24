@@ -11,6 +11,7 @@ import {
 } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { UserRepository } from '../user-repository/user-repository';
+import { take } from 'rxjs';
 
 @Component({
   selector: 'app-user-create-component',
@@ -49,30 +50,31 @@ export class UserCreateComponent implements OnInit {
   });
 
   prefillFormForEditMode() {
-    const user = this.userService.getUserById(this.userId);
-    if (user) {
-      const hobbiesArray = this.userProperties.get('hobbies') as FormArray;
+    this.userService.getUserById$(this.userId)
+      .pipe(take(1)).subscribe(user => {
+        if (!user) return;
+        const hobbiesArray = this.userProperties.get('hobbies') as FormArray;
 
-      // Clear all existing hobby FormControls
-      while (hobbiesArray.length > 0) {
-        hobbiesArray.removeAt(0);
-      }
+        // Clear all existing hobby FormControls
+        while (hobbiesArray.length > 0) {
+          hobbiesArray.removeAt(0);
+        }
 
-      // Add the correct number of FormControls with the user's hobby values
-      user.hobbies.forEach((hobby) => {
-        hobbiesArray.push(new FormControl(hobby));
-      });
+        // Add the correct number of FormControls with the user's hobby values
+        (user.hobbies ?? []).forEach((hobby) => {
+          hobbiesArray.push(new FormControl(hobby));
+        });
 
-      // Set values for non-FormArray controls
-      this.userProperties.patchValue({
-        firstName: user.firstName,
-        lastName: user.lastName,
-        email: user.email,
-        age: user.age,
-        aboutMe: user.aboutMe,
-        premiumUser: user.premiumUser,
-      });
-    }
+        // Set values for non-FormArray controls
+        this.userProperties.patchValue({
+          firstName: user.firstName,
+          lastName: user.lastName,
+          email: user.email,
+          age: user.age,
+          aboutMe: user.aboutMe,
+          premiumUser: user.premiumUser,
+        });
+      })
   }
 
   onSubmitUser() {

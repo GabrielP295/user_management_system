@@ -1,4 +1,4 @@
-import { DocumentReference } from "@angular/fire/compat/firestore";
+import { DocumentReference } from "@angular/fire/firestore";
 import { Observable } from "rxjs";
 
 export type UserUpdateFields = Partial<Omit<User, 'id'>>;
