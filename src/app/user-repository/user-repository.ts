@@ -2,7 +2,6 @@ import { inject, Injectable } from '@angular/core';
 import { User, UsersServiceInterface, UserUpdateFields } from '../../model/Users';
 import { DocumentReference, Firestore, collection, collectionData } from '@angular/fire/firestore';
 import { doc, docData, addDoc, updateDoc, deleteDoc, CollectionReference } from '@angular/fire/firestore';
-import { getDoc } from 'firebase/firestore';
 import { Observable } from 'rxjs';
 
 @Injectable({
@@ -17,7 +16,7 @@ export class UserRepository implements UsersServiceInterface {
     }
 
     getUserById$(id: string): Observable<User | undefined> {
-        const docRef = doc(this.collection, 'users', id);
+        const docRef = doc(this.firestore, 'users', id);
         return docData(docRef, { idField: 'id' }) as Observable<User | undefined>;
     }
 
@@ -26,10 +25,10 @@ export class UserRepository implements UsersServiceInterface {
     }
 
     updateUser(id: string, updates: UserUpdateFields): Promise<void> {
-        return updateDoc(doc(this.collection, 'users', id), updates);
+        return updateDoc(doc(this.firestore, 'users', id), updates);
     }
 
     deleteUser(id: string): Promise<void> {
-        return deleteDoc(doc(this.collection, 'users', id));
+        return deleteDoc(doc(this.firestore, 'users', id));
     }
 }

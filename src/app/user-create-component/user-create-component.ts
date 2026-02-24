@@ -1,5 +1,4 @@
 import { Component, inject, OnInit } from '@angular/core';
-import { UsersService } from '../user-services/users-service';
 import {
   Form,
   FormArray,
@@ -20,7 +19,7 @@ import { take } from 'rxjs';
   styleUrl: './user-create-component.scss',
 })
 export class UserCreateComponent implements OnInit {
-  // userService = inject(UsersService); -> was used with in memory database
+  // userService = inject(UserServices); -> was used with in memory database
   userService = inject(UserRepository);
   route = inject(ActivatedRoute);
   router = inject(Router);
@@ -102,11 +101,10 @@ export class UserCreateComponent implements OnInit {
       return;
     }
 
-    // Store the name for success message before resetting
+    // Create user and display success message
+    this.createUser(user);
     this.successMessage = `${user.firstName} ${user.lastName} was created successfully!`;
     this.showSuccess = true;
-
-    this.createUser(user);
     this.resetValues();
 
     // Auto-hide success message after 4 seconds
