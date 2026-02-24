@@ -10,6 +10,7 @@ import {
   Validators,
 } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+import { UserRepository } from '../user-repository/user-repository';
 
 @Component({
   selector: 'app-user-create-component',
@@ -19,6 +20,7 @@ import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 })
 export class UserCreateComponent implements OnInit {
   // userService = inject(UsersService); -> was used with in memory database
+  userService = inject(UserRepository);
   route = inject(ActivatedRoute);
   router = inject(Router);
   isEditMode: boolean = false;
@@ -89,7 +91,7 @@ export class UserCreateComponent implements OnInit {
       aboutMe: this.userProperties.value.aboutMe,
       hobbies,
       premiumUser: this.userProperties.value.premiumUser,
-      profileImage: 'assets/images/default_profile_icon.jpg',
+      imageUrl: 'assets/images/default_profile_icon.jpg',
     };
 
     if (this.isEditMode) {
@@ -112,15 +114,17 @@ export class UserCreateComponent implements OnInit {
   }
 
   createUser(user: any) {
-    this.userRepository.createUser(
-      user.firstName,
-      user.lastName,
-      user.email,
-      user.age,
-      user.aboutMe,
-      user.hobbies,
-      user.premiumUser,
-      user.profileImage,
+    this.userService.createUser(
+      {
+        firstName: user.firstName,
+        lastName: user.lastName,
+        email: user.email,
+        age: user.age,
+        aboutMe: user.aboutMe,
+        hobbies: user.hobbies,
+        premiumUser: user.premiumUser,
+        imageUrl: user.imageUrl,
+      }
     );
   }
 
