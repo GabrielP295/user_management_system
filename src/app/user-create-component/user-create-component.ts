@@ -18,7 +18,7 @@ import { ActivatedRoute, Router, RouterLink } from '@angular/router';
   styleUrl: './user-create-component.scss',
 })
 export class UserCreateComponent implements OnInit {
-  userService = inject(UsersService);
+  // userService = inject(UsersService); -> was used with in memory database
   route = inject(ActivatedRoute);
   router = inject(Router);
   isEditMode: boolean = false;
@@ -112,7 +112,7 @@ export class UserCreateComponent implements OnInit {
   }
 
   createUser(user: any) {
-    this.userService.createUser(
+    this.userRepository.createUser(
       user.firstName,
       user.lastName,
       user.email,

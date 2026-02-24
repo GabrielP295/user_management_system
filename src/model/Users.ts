@@ -25,18 +25,9 @@ export interface UsersServiceInterface {
     */
   getAllUsers(): User[];
 
-  createUser(
-    firstName: string,
-    lastName: string,
-    email: string,
-    age: number,
-    aboutMe: string,
-    hobbies: string[],
-    premiumUser: boolean,
-    imageUrl: string
-  ): boolean;
+  createUser(user: UserUpdateFields): any;
 
-  updateUser(id: string, updates: UserUpdateFields): boolean;
+  updateUser(id: string, updates: UserUpdateFields): any;
 
-  deleteUser(id: string): boolean;
+  deleteUser(id: string): any;
 }
