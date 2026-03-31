@@ -2,20 +2,20 @@
 
 A full-stack CRUD application built with **Angular** and **Firebase (Firestore)**. Users can be created, viewed, edited, and deleted through a reactive interface with real-time Firestore persistence.
 
-**Live Demo:** [https://your-app.web.app](https://your-app.web.app)
+**Live Demo:** [Live Demo](https://user-management-system-a3ea7.web.app/user-create-component/1LPHUGmE6VGzZZYczUrP)
 
 ---
 
 ## Screenshots
 
 ### User List
-![User List Page](screenshots/user-list.png)
+![User List Page](user-list.png)
 
 ### Create User
-![Create User Form](screenshots/create-user.png)
+![Create User Form](create-user.png)
 
 ### Edit User
-![Edit User Form](screenshots/edit-user.png)
+![Edit User Form](edit-user.png)
 
 ---
 
